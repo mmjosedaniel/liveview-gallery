@@ -16,6 +16,20 @@ defmodule Gallery do
     "photo-1530717449302-271006cdc1bf"
   ]
 
+  def first_id(ids \\ @ids), do: List.first(ids)
+
+
+  def next_image_id(ids\\@ids, id) do
+    Enum.at(ids, next_index(ids, id), first_id(ids))
+  end
+
+
+  defp next_index(ids, id) do
+    ids
+    |> Enum.find_index(& &1 == id)
+    |> Kernel.+(1)
+  end
+
   def image_ids, do: @ids
 
   def image_url(image_id, params) do
@@ -30,4 +44,15 @@ defmodule Gallery do
 
   def large_url(id),
     do: image_url(id, %{h: 500, fit: "crop"})
+
+  def prev_image_id(ids\\@ids, id) do
+    Enum.at(ids, prev_index(ids, id))
+  end
+
+
+  defp prev_index(ids, id) do
+    ids
+    |> Enum.find_index(& &1 == id)
+    |> Kernel.-(1)
+  end
 end
